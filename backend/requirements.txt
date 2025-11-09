@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+dask[complete]
+pandas
+pyarrow
+numpy
+scikit-learn
+geopandas
+shapely
+
+
