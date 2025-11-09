@@ -2,12 +2,6 @@
 
 A local, single-machine data dashboard for analyzing NYC Yellow Taxi Trip Records 
 
-## Project Structure
-
-- `backend/` - FastAPI server with Dask analytics
-- `frontend/` - Next.js web application
-- `data/` - Local data storage (gitignored)
-
 ## Setup
 
 ### Backend
