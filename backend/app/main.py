@@ -9,6 +9,16 @@ from fastapi.middleware.cors import CORSMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan handler for startup/shutdown events."""
+    print("Starting application initialization...")
+    
+    # Startup: Initialize Dask client early
+    try:
+        from .core.dask_client import get_client
+        client = get_client()
+        print(f"Dask client initialized: {client}")
+    except Exception as e:
+        print(f"Warning: Could not initialize Dask client: {e}")
+    
     # Startup: Preload ML model
     try:
         from .routers.predict import preload_model
@@ -18,11 +28,36 @@ async def lifespan(app: FastAPI):
             print("Warning: ML model not available - prediction endpoints will fail")
     except Exception as e:
         print(f"Warning: Could not preload ML model: {e}")
-
+    
+    # Warmup: Trigger a small data read to cache metadata
+    try:
+        from .data.io import read_trips
+        from .data.filters import Filters
+        import pandas as pd
+        
+        # Read a tiny sample to warm up the parquet metadata cache
+        warmup_filters = Filters(
+            date_from="2015-01-01",
+            date_to="2015-01-02"
+        )
+        ddf = read_trips(warmup_filters)
+        # Just count to trigger metadata loading
+        _ = len(ddf)
+        print("Data cache warmed up successfully")
+    except Exception as e:
+        print(f"Warning: Data warmup failed: {e}")
+    
+    print("Application startup complete")
     yield
 
-    # Shutdown: cleanup if needed
-    pass
+    # Shutdown: cleanup Dask client
+    try:
+        from .core.dask_client import get_client
+        client = get_client()
+        client.close()
+        print("Dask client closed")
+    except Exception:
+        pass
 
 
 app = FastAPI(title="NYC Taxi Dashboard API", lifespan=lifespan)
