@@ -22,8 +22,8 @@ def get_client():
             # Production: Use threaded scheduler for lower memory footprint
             _client = Client(
                 processes=False,  # Use threads instead of processes
-                threads_per_worker=4,
-                memory_limit='3GB',
+                threads_per_worker=6,  # Increased for 2 CPUs
+                memory_limit='6GB',    # Increased for 8GB VM
                 silence_logs=30
             )
         else:
