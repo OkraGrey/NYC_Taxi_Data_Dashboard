@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { href: "/geo", label: "Geo" },
   { href: "/fares", label: "Fares" },
   { href: "/quality", label: "Quality" },
+  { href: "/predict", label: "Fare Predictor" },
 ];
 
 export default function Navigation() {

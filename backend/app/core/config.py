@@ -10,7 +10,6 @@ DATA_DIR = PROJECT_ROOT / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
 PARQUET_DATA_DIR = DATA_DIR / "parquet"
 ARTIFACTS_DIR = DATA_DIR / "artifacts"
-
-# TODO: Add additional configuration settings
+MODELS_DIR = DATA_DIR / "models"
 
 

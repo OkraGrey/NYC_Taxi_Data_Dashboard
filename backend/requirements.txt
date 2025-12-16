@@ -7,5 +7,7 @@ numpy
 scikit-learn
 geopandas
 shapely
+lightgbm>=4.0.0
+joblib
 
 
