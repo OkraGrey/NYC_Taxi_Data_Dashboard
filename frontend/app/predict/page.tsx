@@ -383,7 +383,7 @@ function PredictContent() {
                 </svg>
               </div>
               <p style={styles.placeholderText}>
-                Select pickup and dropoff locations, then click "Predict Fare" to get an estimate
+                Select pickup and dropoff locations, then click &quot;Predict Fare&quot; to get an estimate
               </p>
             </div>
           )}
