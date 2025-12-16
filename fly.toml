@@ -1,0 +1,44 @@
+# Fly.io configuration for NYC Taxi Dashboard Backend
+# Deploy with: fly deploy (from project root)
+# First time: fly launch --no-deploy, then fly deploy
+#
+# After first deployment, set the CORS_ORIGINS secret:
+# fly secrets set CORS_ORIGINS="https://your-vercel-app.vercel.app"
+
+app = "nyc-taxi-api"
+primary_region = "ewr"  # Newark, NJ - closest to NYC
+
+[build]
+  dockerfile = "backend/Dockerfile"
+
+[env]
+  PORT = "8080"
+  PYTHONUNBUFFERED = "1"
+  # Note: Set CORS_ORIGINS via `fly secrets set` for your Vercel domain
+  # Example: fly secrets set CORS_ORIGINS="https://your-app.vercel.app,https://your-custom-domain.com"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  grace_period = "10s"
+  interval = "30s"
+  method = "GET"
+  timeout = "5s"
+  path = "/"
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1
+
+# Scale up for better performance with larger datasets (optional)
+# [[vm]]
+#   memory = "2gb"
+#   cpu_kind = "shared"
+#   cpus = 2

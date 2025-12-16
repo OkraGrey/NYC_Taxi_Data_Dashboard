@@ -1,0 +1,49 @@
+# Ignore development and unnecessary files
+.git
+.gitignore
+.gitattributes
+
+# Frontend - not needed for backend Docker build
+frontend/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+backend/venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large raw data files (not needed - only processed parquet is)
+data/raw/*.csv
+!data/raw/taxi_zone_lookup.csv
+data/raw/taxi_zones/
+
+# Development files
+Documents/
+.claude/
+.mcp.json
+Extras/
+thoughts/
+*.log
+server.log
+
+# Documentation
+*.md
+!README.md

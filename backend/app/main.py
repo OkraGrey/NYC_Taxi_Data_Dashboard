@@ -1,5 +1,6 @@
 """FastAPI main application entry point."""
 
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,10 +27,20 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="NYC Taxi Dashboard API", lifespan=lifespan)
 
-# Configure CORS
+# Configure CORS - support both development and production
+# CORS_ORIGINS env var can be comma-separated list of allowed origins
+cors_origins_env = os.environ.get("CORS_ORIGINS", "")
+cors_origins = [
+    "http://localhost:3000",  # Local development
+]
+
+# Add production origins from environment
+if cors_origins_env:
+    cors_origins.extend([origin.strip() for origin in cors_origins_env.split(",") if origin.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
